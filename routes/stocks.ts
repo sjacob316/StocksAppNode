@@ -1,7 +1,24 @@
 import express from 'express';
 
+const WebSocket = require("ws");
+// const socket = new WebSocket('wss://ws.finnhub.io?token=bu5sln748v6v0i9su740');
 const router = express.Router();
 const axios = require("axios").default
+const jwt = require('jsonwebtoken');
+
+// socket.addEventListener('open', function (event) {
+//     socket.send(JSON.stringify({'type':'subscribe', 'symbol': 'AAPL'}))
+// })
+
+// socket.addEventListener('message', function (event) {
+//     console.log('Message from server ', event.data);
+// });
+
+router.post("/verify-token" , (req, res) => {
+    let value = jwt.verify(req.body.token)
+    return res.json(value);
+
+})
 
 router.get("/symbol-search/:keywords", (req, res) => axios.get(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${req.params.keywords}&apikey=${process.env.ALPHAVANTAGE_APIKEY}`).then((response) => {    
     res.json(response.data);    
@@ -73,6 +90,16 @@ router.get("/company-earnings/:symbol", (req, res) => axios.get(`https://finnhub
     res.json(response.data);
 }))
 
-router.get("/news-sentiment")
+router.get("/pattern-recognition", (req, res) => axios.get(`https://finnhub.io/api/v1/scan/pattern?symbol=${req.params.symbol}&resolution=D&token=${process.env.FINNHUB_APIKEY}`).then((response) => {
+    res.json(response.data);
+}))
+
+router.get("/earnings-calendar", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/earnings?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`).then((response) => {
+    res.json(response.data);
+}))
+
+router.get("/ipo-calendar", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/ipo?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`). then((response) => {
+    res.json(response.data);
+}))
 
 module.exports = router; 
