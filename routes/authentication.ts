@@ -37,15 +37,31 @@ router.post("/login/", async (req, res) => {
     }
     if(await bcrypt.compare(password, user.password)) {
         const token = jsonwebtoken.sign( {id: user._id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '1h'} )
-        res.cookie('token', token, { maxAge: 60 * 60 * 1000, httpOnly: true });
+        res.cookie('token', token, { maxAge: 60000, httpOnly: true });
         return res.json({ token})
     }
     res.json({ status: 'error', error: 'Invalid username/password'})
 })
 
+// router.post("/verify/", async (req, res) => {
+//     const { token } = req.params;
+//     console.log(req.headers.cookie);
+//     const returnValue = jsonwebtoken.verify(req.headers.cookie.substring(6), process.env.JWT_SECRET);
+//     return res.json(returnValue);
+// })
+
 router.post("/logout/", async (req, res) => {
     res.cookie('token', 'none', { maxAge: 0, httpOnly: true})
     return res.json({message: "User logged out succesfully"})
 })
+const passport = require('passport');
 
+router.get("/google", passport.authenticate("google", {
+    scope: ['profile']
+}));
+
+router.get("/google/redirect", (req, res) => {
+    console.log("here")
+    res.json({data: "success"})
+})
 module.exports = router; 

@@ -14,12 +14,6 @@ const jwt = require('jsonwebtoken');
 //     console.log('Message from server ', event.data);
 // });
 
-router.post("/verify-token" , (req, res) => {
-    let value = jwt.verify(req.body.token)
-    return res.json(value);
-
-})
-
 router.get("/symbol-search/:keywords", (req, res) => axios.get(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${req.params.keywords}&apikey=${process.env.ALPHAVANTAGE_APIKEY}`).then((response) => {    
     res.json(response.data);    
 }))
