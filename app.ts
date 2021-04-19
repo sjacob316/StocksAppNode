@@ -8,7 +8,7 @@ const app = express();
 const port = 4000;
 const cors = require("cors");
 const mongoose = require('mongoose');
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 const jwt = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
 
@@ -26,11 +26,11 @@ app.use(express.json())
 app.use(
   session({
     secret: "mysecret",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 

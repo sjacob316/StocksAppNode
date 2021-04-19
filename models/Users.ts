@@ -1,19 +1,24 @@
 const mongoose = require('mongoose');
 
-const SavedStocksSchema = new mongoose.Schema({
-    stockSymbol: { type: String }
-})
+// const MembershipSchema = new mongoose.Schema({
+//     provider: { type: String, required: true },
+//     providerUserId: { type: String },
+//     password: { type: String },
+//     dateAdded: { type: Date, default: Date.now() }
+// }, { collection: "MembershipAccounts" })
 
-const RegisterUserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
+    provider: { type: String, required: true },
+    providerUserId: { type: String },
+    password: { type: String },
+    dateAdded: { type: Date, default: Date.now() },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true},
+    email: { type: String, required: true, unique: true },    
     savedStocks: [{type: String}]    
-}, { collection: "Users"})
+}, { collection: "Users"} )
 
-const model = mongoose.model("RegisterUser", RegisterUserSchema)
+// const membership = new mongoose.model("Membership", MembershipSchema);
+const userInfo = mongoose.model("User", UserSchema);
 
-module.exports = model;
-
-// export default mongoose.model("RegisterUser", RegisterUserSchema)
+module.exports = userInfo

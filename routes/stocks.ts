@@ -29,6 +29,7 @@ router.get("/time-series/:symbol", (req, res) => axios.get(`https://www.alphavan
         "date": e[0]
     }));  
     arrayOfObj.reverse();
+    console.log(response.data);
     res.json(arrayOfObj);    
 }))
 
@@ -88,11 +89,11 @@ router.get("/pattern-recognition", (req, res) => axios.get(`https://finnhub.io/a
     res.json(response.data);
 }))
 
-router.get("/earnings-calendar", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/earnings?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`).then((response) => {
+router.get("/earnings-calendar/:startDate/:endDate", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/earnings?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`).then((response) => {
     res.json(response.data);
 }))
 
-router.get("/ipo-calendar", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/ipo?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`). then((response) => {
+router.get("/ipo-calendar/:startDate/:endDate", (req, res) => axios.get(`https://finnhub.io/api/v1/calendar/ipo?from=${req.params.startDate}&to=${req.params.endDate}&token=${process.env.FINNHUB_APIKEY}`). then((response) => {
     res.json(response.data);
 }))
 
